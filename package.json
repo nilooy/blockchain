@@ -1,14 +1,22 @@
 {
-  "name": "bitstones",
+  "name": "blockchain",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.test.js",
   "scripts": {
-    "start": "nodemon block",
     "test": "jest --watchAll"
   },
-  "author": "Niloy",
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reznil/blockchain.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/reznil/blockchain/issues"
+  },
+  "homepage": "https://github.com/reznil/blockchain#readme",
   "devDependencies": {
     "jest": "^25.1.0"
   }
