@@ -1,21 +1,25 @@
 const Block = require("../block");
 const cryptoHash = require("../cryptoHash");
-const { GENESIS_DATA } = require("../config");
+const { GENESIS_DATA, MINE_RATE } = require("../config");
 
 describe("Block", () => {
   //=================================================>
   // test the block class with necessary parameters
   //=================================================>
-  const timestamp = "Test date";
+  const timestamp = 2000;
   const lastHash = "Test Last Hash";
   const hash = "Test hash";
   const data = "Test Data";
+  const nonce = 1;
+  const difficulty = 1;
 
   const block = new Block({
     timestamp,
     lastHash,
     hash,
-    data
+    data,
+    nonce,
+    difficulty
   });
 
   it("has a `timestamp` property", () => {
@@ -29,6 +33,12 @@ describe("Block", () => {
   });
   it("has a `data` property", () => {
     expect(block.data).toEqual(data);
+  });
+  it("has a `nonce` property", () => {
+    expect(block.nonce).toEqual(nonce);
+  });
+  it("has a `difficulty` property", () => {
+    expect(block.difficulty).toEqual(difficulty);
   });
 
   //=================================================>
@@ -79,8 +89,58 @@ describe("Block", () => {
     // Creates a sha hash
     it("creates a SHA-256 `hash` based on proper inputs", () => {
       expect(minedBlock.hash).toEqual(
-        cryptoHash(minedBlock.timestamp, lastBlock.hash, data)
+        cryptoHash(
+          minedBlock.timestamp,
+          minedBlock.nonce,
+          minedBlock.difficulty,
+          lastBlock.hash,
+          data
+        )
       );
+    });
+
+    it("sets a hash that matches the difficulty criteria", () => {
+      // number of zeros in begenning of the hash have to be equal of difficulty
+      // e.g: difficulty = 6, in that case there should 6 zeros before the hex start in hash
+      // like 000000x78659789868i709 (6 zeros)
+      expect(minedBlock.hash.substring(0, minedBlock.difficulty)).toEqual(
+        "0".repeat(minedBlock.difficulty)
+      );
+    });
+
+    it("adjusts the difficulty", () => {
+      const possibleResults = [
+        lastBlock.difficulty + 1,
+        lastBlock.difficulty - 1
+      ];
+
+      expect(possibleResults.includes(minedBlock.difficulty)).toBe(true);
+    });
+  });
+
+  //=================================================>
+  // Dynamic difficulty : Adjust the difficutly automically
+  //=================================================>
+
+  describe("adjustDifficulty()", () => {
+    it("raises difficulty for a quickly mined block", () => {
+      expect(
+        Block.adjustDifficulty({
+          originalBlock: block,
+          // Low the global mine rate to check if it raises or not
+          timestamp: block.timestamp + MINE_RATE - 100
+        })
+      ).toEqual(block.difficulty + 1);
+    });
+
+    it("lowers the difficulty for a slowly mined block", () => {
+      expect(
+        Block.adjustDifficulty({
+          originalBlock: block,
+          // increase the global mine rate to check if it raises or not
+          timestamp: block.timestamp + MINE_RATE + 100
+        })
+      ).toEqual(block.difficulty - 1);
     });
   });
 });

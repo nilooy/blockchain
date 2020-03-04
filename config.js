@@ -1,4 +1,3 @@
-const crypto = require("crypto");
 const cryptoHash = require("./cryptoHash");
 
 //=================================================>
@@ -8,6 +7,9 @@ const cryptoHash = require("./cryptoHash");
 const GEN_LAST_HASH = "GENESIS BLOCK DOES NOT HAVE A LAST HASH";
 const GEN_DATA =
   "IT IS A DIGITAL ASSET GENERATION SYSTEM WITH CRYPTO CURRENCY EXCHANGE PROTOCOL";
+const GEN_INITIAL_DIFFICLUTY = 3;
+
+const GEN_MINE_RATE = 1000;
 
 //=================================================>
 // EXPORTED CONFIG
@@ -18,8 +20,11 @@ const Config = {
     timestamp: Date.now(),
     lastHash: cryptoHash(GEN_LAST_HASH),
     hash: cryptoHash([this.timestamp, this.lastHash, this.data].join()),
-    data: cryptoHash(GEN_DATA)
-  }
+    data: cryptoHash(GEN_DATA),
+    nonce: 0,
+    difficulty: GEN_INITIAL_DIFFICLUTY
+  },
+  MINE_RATE: GEN_MINE_RATE
 };
 
 //=================================================>
