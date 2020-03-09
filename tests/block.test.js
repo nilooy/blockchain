@@ -1,6 +1,7 @@
 const Block = require("../block");
 const cryptoHash = require("../cryptoHash");
 const { GENESIS_DATA, MINE_RATE } = require("../config");
+const hexToBinary = require("hex-to-binary");
 
 describe("Block", () => {
   //=================================================>
@@ -103,9 +104,9 @@ describe("Block", () => {
       // number of zeros in begenning of the hash have to be equal of difficulty
       // e.g: difficulty = 6, in that case there should 6 zeros before the hex start in hash
       // like 000000x78659789868i709 (6 zeros)
-      expect(minedBlock.hash.substring(0, minedBlock.difficulty)).toEqual(
-        "0".repeat(minedBlock.difficulty)
-      );
+      expect(
+        hexToBinary(minedBlock.hash).substring(0, minedBlock.difficulty)
+      ).toEqual("0".repeat(minedBlock.difficulty));
     });
 
     it("adjusts the difficulty", () => {
