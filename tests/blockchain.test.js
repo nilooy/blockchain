@@ -1,6 +1,6 @@
 const Blockchain = require("../blockchain");
-const Block = require("../block");
-const cryptoHash = require("../cryptoHash");
+const Block = require("../blockchain/block");
+const cryptoHash = require("../util/cryptoHash");
 
 describe("Blockchain", () => {
   let blockchain, newChain, originalChain;
@@ -66,7 +66,7 @@ describe("Blockchain", () => {
       // jumped difficulty
       describe("and the chain conatins a block with a jumped diifficulty", () => {
         it("returns false", () => {
-          const lastBlock = blockchain.cahin[blockchain.chain.length - 1];
+          const lastBlock = blockchain.chain[blockchain.chain.length - 1];
           const lastHash = lastBlock.hash;
           const timestamp = Date.now();
           const nonce = 0;
@@ -84,7 +84,7 @@ describe("Blockchain", () => {
             data
           });
 
-          blockchain.chain.push(badBlock);
+          blockchain.chain.push(fakeBlock);
 
           expect(Blockchain.isValidChain(blockchain.chain)).toBe(false);
         });

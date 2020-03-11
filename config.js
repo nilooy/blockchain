@@ -1,4 +1,4 @@
-const cryptoHash = require("./cryptoHash");
+const cryptoHash = require("./util/cryptoHash");
 
 //=================================================>
 // THE FIRTS BLOCK IN THE BLOCKCHAIN
@@ -24,7 +24,8 @@ const Config = {
     nonce: 0,
     difficulty: GEN_INITIAL_DIFFICLUTY
   },
-  MINE_RATE: GEN_MINE_RATE
+  MINE_RATE: GEN_MINE_RATE,
+  STARTING_BALANCE: 1000
 };
 
 //=================================================>
