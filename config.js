@@ -1,4 +1,4 @@
-const cryptoHash = require("./util/cryptoHash");
+const { cryptoHash } = require("./util/");
 
 //=================================================>
 // THE FIRTS BLOCK IN THE BLOCKCHAIN
