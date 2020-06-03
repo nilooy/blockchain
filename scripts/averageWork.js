@@ -9,7 +9,7 @@ const times = [];
 for (let i = 0; i < 10000; i++) {
   prevTimestamp = blockchain.chain[blockchain.chain.length - 1].timestamp;
   blockchain.addBlock({
-    data: "block " + i
+    data: "block " + i,
   });
   nextBlock = blockchain.chain[blockchain.chain.length - 1];
   nextTimestamp = nextBlock.timestamp;
@@ -24,6 +24,26 @@ for (let i = 0; i < 10000; i++) {
     difficulty: nextBlock.difficulty,
     AvgTime: average + "ms",
     Hash: nextBlock.hash,
-    lastBlock: nextBlock.lastHash
+    lastBlock: nextBlock.lastHash,
   });
 }
+
+//=================================================>
+// Check the transaction pool
+// function to test transaction pool
+//=================================================>
+
+const transactionPool = (wallet, blocks) => {
+  const transaction = wallet.transaction.id;
+  const user = wallet.user;
+
+  if (!user || !transaction) throw new Error("Transaction not found");
+
+  const lastBlock = blocks[blocks.length - 1];
+
+  const transactionPool = lastBlock._id === transaction._id;
+
+  if (transactionPool) {
+    return wallet;
+  } else return null;
+};

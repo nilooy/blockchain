@@ -1,0 +1,29 @@
+
+### Get blocks from the server
+GET http://localhost:8000/api/blocks
+
+### Transaction
+POST http://localhost:8000/api/transact HTTP/1.1
+Content-Type: application/json
+
+{
+    "recipient": "test user",
+    "amount": 2.25 
+}
+
+
+### Mine
+POST http://localhost:8000/api/mine
+Content-Type: application/json
+
+{
+    "type": "diamante",
+    "name": "Acqua pearl",
+    "user_id": 154815254425
+}
+
+
+### Transaction Pool
+GET http://localhost:8000/api/transaction-pool-map
+
+

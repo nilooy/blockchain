@@ -22,14 +22,15 @@ const Config = {
     hash: cryptoHash([this.timestamp, this.lastHash, this.data].join()),
     data: cryptoHash(GEN_DATA),
     nonce: 0,
-    difficulty: GEN_INITIAL_DIFFICLUTY
+    difficulty: GEN_INITIAL_DIFFICLUTY,
   },
   MINE_RATE: GEN_MINE_RATE,
-  STARTING_BALANCE: 1000
+  STARTING_BALANCE: 1000,
 };
 
 //=================================================>
 // cryptoHash, GEN_LAST_HASH, GEN_DATA  is declared above
+//
 //=================================================>
 
 module.exports = Config;
