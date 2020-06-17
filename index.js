@@ -72,7 +72,7 @@ app.get("/api/transaction-pool-map", (req, res) => {
 // Sync chain
 //=================================================>
 
-const syncChain = () => {
+const syncWithRootState = () => {
   request({ url: ROOT_NODE_ADDR + "/api/blocks" }, (err, res, body) => {
     if (!err && res.statusCode === 200) {
       const rootChain = JSON.parse(body);
@@ -80,6 +80,21 @@ const syncChain = () => {
       blockchain.replaceChain(rootChain);
     }
   });
+
+  request(
+    { url: ROOT_NODE_ADDR + "/api/transaction-pool-map" },
+    (err, res, body) => {
+      if (!err && res.statusCode === 200) {
+        const rootTransactionPoolMap = JSON.parse(body);
+        console.log(
+          "Replace transaction pool map on a sync with",
+          rootTransactionPoolMap
+        );
+
+        transactionPool.setMap(rootTransactionPoolMap);
+      }
+    }
+  );
 };
 
 let PEER_PORT;
@@ -94,6 +109,6 @@ app.listen(PORT, () => {
   console.log("@=> Server is up and running on " + PORT);
 
   if (PORT !== DEFAULT_PORT) {
-    syncChain();
+    syncWithRootState();
   }
 });
