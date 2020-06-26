@@ -1,6 +1,7 @@
 const Transaction = require("../wallet/transaction");
 const Wallet = require("../wallet");
 const { verifySignature } = require("../util");
+const Config = require("../config");
 
 describe("Transaction", () => {
   let transaction, senderWallet, recipient;
@@ -12,7 +13,7 @@ describe("Transaction", () => {
     transaction = new Transaction({
       senderWallet,
       recipient,
-      amount
+      amount,
     });
   });
 
@@ -58,7 +59,7 @@ describe("Transaction", () => {
         verifySignature({
           publicKey: senderWallet.publicKey,
           data: transaction.outputMap,
-          signature: transaction.input.signature
+          signature: transaction.input.signature,
         })
       ).toBe(true);
     });
@@ -106,7 +107,7 @@ describe("Transaction", () => {
           transaction.update({
             senderWallet,
             recipient: "test",
-            amount: 999999
+            amount: 999999,
           });
         }).toThrow("Amount exceeeds balance");
       });
@@ -122,7 +123,7 @@ describe("Transaction", () => {
         transaction.update({
           senderWallet,
           recipient: nextRecipient,
-          amount: nextAmount
+          amount: nextAmount,
         });
       });
 
@@ -156,7 +157,7 @@ describe("Transaction", () => {
           transaction.update({
             senderWallet,
             recipient: nextRecipient,
-            amount: addedAmount
+            amount: addedAmount,
           });
         });
 
@@ -172,6 +173,25 @@ describe("Transaction", () => {
           );
         });
       });
+    });
+  });
+
+  describe("rewardTransaction()", () => {
+    let rewardTransaction, minerWallet;
+
+    beforeEach(() => {
+      minerWallet = new Wallet();
+      rewardTransaction = Transaction.rewardTransaction({ minerWallet });
+    });
+
+    it("creates a transaction with the reward input", () => {
+      expect(rewardTransaction.input).toEqual(Config.REWARD_INPUT);
+    });
+
+    it("creates one transaction for the miner with the mining reward", () => {
+      expect(rewardTransaction.outputMap[minerWallet.publicKey]).toEqual(
+        Config.MINING_REWARD
+      );
     });
   });
 });

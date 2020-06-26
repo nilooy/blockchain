@@ -11,6 +11,12 @@ const GEN_INITIAL_DIFFICLUTY = 3;
 
 const GEN_MINE_RATE = 1000;
 
+const REWARD_INPUT = {
+  address: "*authorized-reward*",
+};
+
+const MINING_REWARD = 50;
+
 //=================================================>
 // EXPORTED CONFIG
 //=================================================>
@@ -26,6 +32,8 @@ const Config = {
   },
   MINE_RATE: GEN_MINE_RATE,
   STARTING_BALANCE: 1000,
+  REWARD_INPUT,
+  MINING_REWARD,
 };
 
 //=================================================>
